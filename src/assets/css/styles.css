@@ -1,0 +1,29 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Divs */
+
+.margin-top{margin-top:1em;}
+.margin-bottom{margin-top:1em;}
+.margin-horizontal{margin: 0 1em 0 1em;}
+.center{justify-content:center;align-items:center;display:flex;}
+.half-form{width:40%}
+
+
+/* Fonts */
+.input-label{font-size:1em; color:#444; font-weight:bold}
+.label{font-weight: bold;}
+.label-title{font-size:1.5em;font-weight:bold;color:#444}
+a:hover{text-decoration:none}
+
+/* Colors */
+.blue{color:#007bff}
+
+
+/* Buttons */
+.btn-primary{border:2px solid #007bff!important; font-weight: bold;transition:1s all}
+.btn-primary:hover, .btn-primary:active, .btn-primary:focus {color:#007bff!important; background:white;}
+.icon-button{margin-left:8px}
+
+
+/* Others */
+.img-logo{width:200px}
