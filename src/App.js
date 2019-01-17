@@ -12,6 +12,9 @@
 import reducers from './system/reducers/index.js';
 import {createStore, applyMiddleware} from 'redux';
 import ReduxThunk from 'redux-thunk';
+import 'bootstrap/dist/css/bootstrap.css';
+
+import { modal } from 'bootstrap'
 
 import React from "react";
 

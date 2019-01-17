@@ -1,6 +1,6 @@
 /** 
  * Classe de Login do sistema
- * Última modificação em 15/01/2019
+ * Última modificação em 17/01/2019
  * Desenvolivido por @mathmed
  * https://github.com/mathmed   
  * PW Admin - Todos os direitos reservados.
@@ -8,20 +8,20 @@
 
 /* Importações necessárias */
 import React from "react";
-import 'bootstrap/dist/css/bootstrap.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { connect } from 'react-redux';
 
 /* Actions */
-import {altera, loginAPI} from "../system/actions/login_action.js";
+import {altera, loginAPI, verificar_primeiro_acesso} from "../system/actions/login_action.js";
 
-import { faSignInAlt, faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { faSignInAlt, faSpinner, faSadTear, faSync } from '@fortawesome/free-solid-svg-icons'
 
 /* Iniciando a classe */
 class Login extends React.Component{
 
     render(){
         return (
+
             <form>
             <div className = "container">
                 <div className = "center margin-top">
@@ -53,8 +53,47 @@ class Login extends React.Component{
                     </div>
                 </div>
                 <div className = "center margin-top">
-                    <a href = "/first" className = "label">Primeiro acesso? Clique aqui</a>
-                </div>    
+                    <a onClick = {() => this.props.verificar_primeiro_acesso()} data-target = "#primeiro-acesso" data-toggle = "modal" className = "label primeiro-acesso fromRight">Primeiro acesso? Clique aqui</a>
+                </div> 
+
+                <div className="modal" tabIndex="-1" role="dialog" id = "primeiro-acesso">
+                    <div className="modal-dialog" role="document">
+                        <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title"><b>Primeiro acesso</b></h5>
+                            <button type="button" className="close" data-dismiss="modal" aria-label="Fechar">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div className="modal-body">
+                            {
+                                
+                                this.props.loading_check_newuser ? 
+
+                                <div class = "center column">
+                                    <label class = "input-label">Aguarde, estamos verificando se é e seu primero acesso...</label>
+                                    <FontAwesomeIcon className = "blue" size = "2x" spin icon={faSpinner} />
+                                </div>
+
+                                : (this.props.check_novousuario_error ?
+
+                                    
+                                    <div class = "column">
+                                        <label class = "input-label small">Ocorreu um erro com sua requisição ao servidor, tente novamente mais tarde <FontAwesomeIcon className = "blue" size = "lg" icon={faSadTear} /></label>
+                                        <button type = "button" onClick = {() => this.props.verificar_primeiro_acesso()} className = "btn btn-primary">Tentar novamente<FontAwesomeIcon className="icon-button" icon={faSync} /></button>
+                                    </div>
+                                    
+                                : <label>Susususcesooo</label>
+                                    
+                                )
+                        }
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        </div>
+                        </div>
+                    </div>
+                </div>  
             </div>
             </form>
         )
@@ -66,9 +105,12 @@ const mapStateToProps = state => (
     {
         login: state.login_reducer.login,
         senha: state.login_reducer.senha,
-        loading: state.login_reducer.loading
+        loading: state.login_reducer.loading,
+        loading_check_newuser: state.login_reducer.loading_check_newuser,
+        check_novousuario_error: state.login_reducer.check_novousuario_error,
+        return_check: state.login_reducer.return_check
     }
 );
 
 /* Exportando informações */
-export default connect (mapStateToProps, {altera, loginAPI})(Login);
+export default connect (mapStateToProps, {altera, loginAPI, verificar_primeiro_acesso})(Login);

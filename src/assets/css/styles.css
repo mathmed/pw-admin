@@ -7,6 +7,7 @@
 .margin-horizontal{margin: 0 1em 0 1em;}
 .center{justify-content:center;align-items:center;display:flex;}
 .half-form{width:40%}
+.column{flex-direction: column}
 
 
 /* Fonts */
@@ -14,6 +15,7 @@
 .label{font-weight: bold;}
 .label-title{font-size:1.5em;font-weight:bold;color:#444}
 a:hover{text-decoration:none}
+.small{font-size:.9em}
 
 /* Colors */
 .blue{color:#007bff}
@@ -27,3 +29,16 @@ a:hover{text-decoration:none}
 
 /* Others */
 .img-logo{width:200px}
+a {cursor: pointer!important}
+
+.primeiro-acesso {
+    border-bottom: 2px solid transparent;
+    padding-left: -20px;
+    transition: 1s all;
+}
+
+.primeiro-acesso:hover{
+    border-bottom: 2px solid #007bff;
+    padding-left: 20px
+
+}
