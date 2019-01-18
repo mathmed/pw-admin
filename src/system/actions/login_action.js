@@ -16,10 +16,13 @@ export const altera = (texto, campo) => {
 }
 
 /* Função para chamar a API e tentar realizar o Login */
-export const loginAPI = (login, senha) => {
+export const loginAPI = (user, pass) => {
 
     /* Retornando o dispatch */
     return dispatch => {
+
+        /* Verificando se os campos foram preenchdos */
+        if(user && pass){
 
         dispatch({type:"login_andamento"})
 
@@ -34,31 +37,30 @@ export const loginAPI = (login, senha) => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    login, senha
+                    user, pass
                 })
             })
 
             /* Verificando o resultado da requisição */
             .then(response => {
 
-                console.log(response.status);
-
                 /* verificando se a requisição foi realizada com sucesso */
                 if(response.status == 200){
                     response.json().then((responseJson) => {
+
                         /* Retornando o dispatch de finalizado */
-                        console.log(response);
+                        dispatch({type:"login_sucesso", payload: responseJson})
                     })
 
-                }else console.log('Error');
+                /* Verificando o porquê da conexão não ter sido realizada */
+                }else if(response.status == 401) dispatch({type:"usuario_senha_errados"})
                 
-            })
-
-            .catch((err) => console.log(err));
+                else dispatch({type:"erro_login_conexao"})
+                
+            }).catch(() => dispatch({type:"erro_login_conexao"}));
         })
-
     }
-
+    }
 }
 
 
@@ -75,7 +77,7 @@ export const verificar_primeiro_acesso = () => {
         /* Iniciando uma promessa e o fetch com o servidor */
         new Promise((resolve, reject) => {
 
-            fetch("http://138.68.13.220:8082/", {
+            fetch("http://138.68.13.220:8082/user/admin_not_exists", {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
@@ -86,27 +88,37 @@ export const verificar_primeiro_acesso = () => {
             /* Verificando o resultado da requisição */
             .then(response => {
 
-                console.log(response.status);
-
                 /* verificando se a requisição foi realizada com sucesso */
                 if(response.status == 200){
-                    response.json().then((responseJson) => {
+                    response.json().then(() => {
 
-                        /* Verificando qual foi o retorno */
-                        if(response.json().result) dispatch({type: "allow_create_account"})
-                        else dispatch({type: "deny_create_account"})
-
-                        
+                        /* Retornando o dispatch */
+                        dispatch({type: "allow_create_account"})
                     })
 
-                }else dispatch({type: "check_novousuario_error"})
-                
-            })
+                /* Verificando o porquê da conexão não ter sido realizada */
+                }else if(response.status == 401) dispatch({type: "deny_create_account"})
 
-            .catch((err) => dispatch({type: "check_novousuario_error"}));
+                else dispatch({type: "check_novousuario_error"})
+                
+            }).catch((err) => dispatch({type: "check_novousuario_error"}));
         })
     }
 
+}
+
+
+/* Função para criar um conta de administrador no sistema */
+export const criarContaAdmin = (username, passwd, passwd2, email) => {
+
+    /* Retornando o Dispatch */
+    return dispatch => {
+
+        /* Avisando que a conta está sendo criada */
+        dispatch({type: "criar_conta_andamento"});
+
+        /* Verificando se os campos foram preenchidos */
+    }
 }
 
 
